@@ -4,7 +4,16 @@
  * Shelter Mind 3D Neural Plexus Atlas 메인 컨트롤러 (Clean White Light UI)
  */
 
-import { BRAIN_REGIONS, ELECTRODE_DATA, ONLINE_SESSIONS, SCROLL_STORIES } from "./brain_data.js";
+import {
+  BRAIN_REGIONS,
+  ELECTRODE_DATA,
+  INDIVIDUAL_CLASSIFIERS,
+  MODEL_EVOLUTION_COMPARISON,
+  ONLINE_SESSIONS,
+  PARTICIPANT_BUNDLES,
+  RESEARCH_PILLARS,
+  SCROLL_STORIES
+} from "./brain_data.js";
 import { BrainAtlas3D } from "./brain_atlas_3d.js";
 
 const CORE_8_IDS = ["T8", "T7", "C4", "C3", "F7", "Cz", "P7", "F3"];
@@ -15,6 +24,8 @@ class BrainAtlasApp {
     this.currentMode = "scroll";
     this.channelFilter = "all";
     this.selectedElectrode = ELECTRODE_DATA[0];
+    this.selectedClassifier = INDIVIDUAL_CLASSIFIERS[0];
+    this.classifierRightTab = "inspector";
 
     this.c3WaveHistory = new Array(90).fill(8.0);
     this.c4WaveHistory = new Array(90).fill(8.0);
@@ -22,6 +33,8 @@ class BrainAtlasApp {
 
     this.init3D();
     this.renderScrollStories();
+    this.renderClassifiersDirectory();
+    this.renderClassifierRightPanel();
     this.renderExplorerDirectory();
     this.renderElectrodeInspector(this.selectedElectrode);
     this.renderLive8ChBars();
@@ -78,8 +91,9 @@ class BrainAtlasApp {
         </div>
         ${idx === SCROLL_STORIES.length - 1 ? `
           <div class="story-action-row">
+            <button class="story-jump-btn" data-goto-mode="classifiers">Classifiers &amp; Pipeline</button>
             <button class="story-jump-btn" data-goto-mode="explorer">Atlas Explorer</button>
-            <button class="story-jump-btn" data-goto-mode="live">Live Telemetry &amp; Report</button>
+            <button class="story-jump-btn" data-goto-mode="live">Live Telemetry</button>
           </div>
         ` : ""}
       </article>
@@ -121,6 +135,215 @@ class BrainAtlasApp {
     container.querySelectorAll("[data-goto-mode]").forEach((btn) => {
       btn.addEventListener("click", () => {
         this.switchMode(btn.getAttribute("data-goto-mode"));
+      });
+    });
+  }
+
+  renderClassifiersDirectory() {
+    const clfListEl = document.getElementById("clf-directory-list");
+    const bundleListEl = document.getElementById("participant-bundles-list");
+    if (clfListEl) {
+      clfListEl.innerHTML = INDIVIDUAL_CLASSIFIERS.map((clf) => `
+        <button class="clf-select-card ${this.selectedClassifier?.id === clf.id ? "active" : ""}" data-clf-id="${clf.id}">
+          <div class="clf-card-top">
+            <span class="clf-tag">${clf.shortTag}</span>
+            <span class="clf-dim-pill">${clf.featureDim.split(" ")[0]}</span>
+          </div>
+          <div class="clf-card-title">${clf.name}</div>
+          <div class="clf-card-role">${clf.roleBadge}</div>
+        </button>
+      `).join("");
+
+      clfListEl.querySelectorAll(".clf-select-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const cid = card.getAttribute("data-clf-id");
+          const found = INDIVIDUAL_CLASSIFIERS.find((x) => x.id === cid);
+          if (found) {
+            this.selectedClassifier = found;
+            this.classifierRightTab = "inspector";
+            this.renderClassifiersDirectory();
+            this.renderClassifierRightPanel();
+            this.atlas3D.applyClassifierProfile(found);
+            this.updateHudBadge(`Classifier: ${found.name} — ${found.featureDim}`);
+          }
+        });
+      });
+    }
+
+    if (bundleListEl) {
+      bundleListEl.innerHTML = PARTICIPANT_BUNDLES.map((b) => `
+        <div class="bundle-card">
+          <div class="bundle-head">
+            <span class="bundle-subj">${b.subject}</span>
+            <span class="bundle-file">${b.bundleFile}</span>
+          </div>
+          <div class="bundle-meta">
+            • Channels: <strong>${b.channels}</strong><br/>
+            • Window: ${b.epochWindow}<br/>
+            • Classifier: <strong>${b.classifier}</strong><br/>
+            • Performance: <strong style="color:var(--accent-emerald)">${b.offlinePerf}</strong>
+          </div>
+          <p class="bundle-desc">${b.keyFinding}</p>
+        </div>
+      `).join("");
+    }
+  }
+
+  renderClassifierRightPanel() {
+    const panel = document.getElementById("classifier-right-inspector");
+    if (!panel) return;
+    const clf = this.selectedClassifier || INDIVIDUAL_CLASSIFIERS[0];
+
+    let bodyHtml = "";
+    if (this.classifierRightTab === "inspector") {
+      bodyHtml = `
+        <div class="inspector-top-banner">
+          <div>
+            <div class="panel-kicker">${clf.shortTag}</div>
+            <h2 style="font-size:15px; font-weight:700; margin-top:2px;">${clf.name}</h2>
+            <p style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${clf.roleBadge}</p>
+          </div>
+        </div>
+
+        <div class="inspector-kpi-grid">
+          ${clf.keyMetrics.map((m) => `
+            <div class="kpi-card">
+              <div class="kpi-label">${m.label}</div>
+              <div class="kpi-value">${m.value}</div>
+            </div>
+          `).join("")}
+        </div>
+
+        <div class="inspector-box">
+          <h4>End-to-End Preprocessing &amp; Feature Pipeline</h4>
+          <div class="pipeline-flow-wrap">
+            ${clf.preprocessing.map((step, i) => `
+              <span class="pipe-step">${step}</span>
+              ${i < clf.preprocessing.length - 1 ? `<span class="pipe-arrow">→</span>` : ""}
+            `).join("")}
+          </div>
+          <div class="formula-code-box">
+            <div><span style="color:#94a3b8"># Scikit-learn / MNE Spec</span></div>
+            <div>${clf.codeSpec}</div>
+            <div style="margin-top:4px; color:#93c5fd">${clf.formulaOrPrinciple}</div>
+          </div>
+        </div>
+
+        <div class="inspector-box">
+          <h4>연구 채택 배경 및 핵심 역할 (Why We Researched This)</h4>
+          <p>${clf.whyUsed}</p>
+        </div>
+
+        <div class="inspector-box">
+          <h4>알고리즘 강점 &amp; 실험 검증 결과</h4>
+          <ul class="clf-strength-list">
+            ${clf.strengths.map((s) => `<li>${s}</li>`).join("")}
+          </ul>
+          <p style="margin-top:8px; font-size:11px; color:var(--text-muted)">
+            <strong>한계점 및 보완:</strong> ${clf.limitations}
+          </p>
+        </div>
+
+        <div class="inspector-box">
+          <h4>3D 뇌 메쉬 활성 채널 (${clf.activeChannels.length}Ch)</h4>
+          <div class="channel-chip-grid" style="margin-top:6px;">
+            ${clf.activeChannels.map((chId) => `
+              <span class="channel-chip core">
+                <strong>${chId}</strong>
+                <span style="font-size:9.5px; opacity:0.7">${Math.round((clf.channelWeights[chId] || 0.7) * 100)}%</span>
+              </span>
+            `).join("")}
+          </div>
+        </div>
+      `;
+    } else if (this.classifierRightTab === "comparison") {
+      bodyHtml = `
+        <div class="inspector-box">
+          <h4>Gen-1 구형(420D SVM) vs Gen-2 신형(4D Shrinkage LDA) 정밀 비교</h4>
+          <p style="margin-bottom:8px;">조교님 피드백(p1–p99 클리핑 + CSP 4D + MinMax + 정석 LDA)과 당일 캘리브레이션 재학습 안정성 검증을 통해 완성한 모델 아키텍처 세대교체 비교표입니다.</p>
+          <div style="overflow-x:auto;">
+            <table class="session-table">
+              <thead>
+                <tr>
+                  <th>비교 항목</th>
+                  <th>Gen-1 구형 (420D SVM)</th>
+                  <th>Gen-2 신형 (4D LDA)</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${MODEL_EVOLUTION_COMPARISON.map((r) => `
+                  <tr>
+                    <td><strong>${r.item}</strong></td>
+                    <td style="color:var(--text-secondary)">${r.oldModel}</td>
+                    <td><strong style="color:var(--accent-blue)">${r.newModel}</strong><br/><small style="color:var(--text-muted)">${r.impact}</small></td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    } else {
+      bodyHtml = RESEARCH_PILLARS.map((p) => `
+        <div class="pillar-card">
+          <div class="pillar-code">${p.code}</div>
+          <div class="pillar-title">${p.title}</div>
+          <p class="pillar-summary">${p.summary}</p>
+          ${p.phases ? p.phases.map((ph) => `
+            <div class="phase-mini-item">
+              <div class="phase-mini-head">${ph.phase} · ${ph.name}</div>
+              <div class="phase-mini-desc">${ph.detail}</div>
+            </div>
+          `).join("") : ""}
+          ${p.steps ? p.steps.map((st) => `
+            <div class="phase-mini-item">
+              <div class="phase-mini-head">${st.step}</div>
+              <div class="phase-mini-desc">${st.desc}</div>
+            </div>
+          `).join("") : ""}
+          ${p.gateRows ? `
+            <div style="overflow-x:auto; margin-top:6px;">
+              <table class="session-table">
+                <thead>
+                  <tr>
+                    <th>Session</th>
+                    <th>Base→FT AUC</th>
+                    <th>L/R Recall</th>
+                    <th>Gate 판정</th>
+                    <th>본실험 성공률</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${p.gateRows.map((g) => `
+                    <tr>
+                      <td><strong>${g.session}</strong></td>
+                      <td>${g.baseAuc} → <strong>${g.ftAuc}</strong></td>
+                      <td>${g.lRec} / ${g.rRec}</td>
+                      <td style="color:${g.decision.startsWith("PASS") ? "var(--accent-emerald)" : "var(--accent-rose)"}; font-weight:700">${g.decision}</td>
+                      <td><strong>${g.finalAcc}</strong></td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
+          ` : ""}
+        </div>
+      `).join("");
+    }
+
+    panel.innerHTML = `
+      <div class="research-subtabs">
+        <button class="res-subtab ${this.classifierRightTab === "inspector" ? "active" : ""}" data-rtab="inspector">개별 분류기 상세</button>
+        <button class="res-subtab ${this.classifierRightTab === "comparison" ? "active" : ""}" data-rtab="comparison">420D SVM vs 4D LDA</button>
+        <button class="res-subtab ${this.classifierRightTab === "pillars" ? "active" : ""}" data-rtab="pillars">핵심 연구 &amp; 디버깅</button>
+      </div>
+      ${bodyHtml}
+    `;
+
+    panel.querySelectorAll(".res-subtab").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        this.classifierRightTab = btn.getAttribute("data-rtab");
+        this.renderClassifierRightPanel();
       });
     });
   }
@@ -483,10 +706,14 @@ class BrainAtlasApp {
       t.classList.toggle("active", t.getAttribute("data-mode") === mode);
     });
     document.getElementById("view-scroll")?.classList.toggle("active", mode === "scroll");
+    document.getElementById("view-classifiers")?.classList.toggle("active", mode === "classifiers");
     document.getElementById("view-explorer")?.classList.toggle("active", mode === "explorer");
     document.getElementById("view-live")?.classList.toggle("active", mode === "live");
 
-    if (mode === "explorer") {
+    if (mode === "classifiers") {
+      this.atlas3D.applyClassifierProfile(this.selectedClassifier);
+      this.updateHudBadge(`Classifier: ${this.selectedClassifier.name} — ${this.selectedClassifier.featureDim}`);
+    } else if (mode === "explorer") {
       this.atlas3D.visualMode = "ATLAS_EXPLORER";
       this.atlas3D.selectElectrode(this.selectedElectrode.id, true);
     } else if (mode === "live") {

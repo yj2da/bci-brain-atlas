@@ -403,6 +403,25 @@ export class BrainAtlas3D {
     });
   }
 
+  applyClassifierProfile(clfData) {
+    if (!clfData) return;
+    this.visualMode = "CLASSIFIER_PROFILE";
+    const accent = new THREE.Color(clfData.accentColor || "#2563eb");
+    const mutedSlate = new THREE.Color("#94a3b8");
+    const activeSet = new Set(clfData.activeChannels || []);
+    const weights = clfData.channelWeights || {};
+
+    ELECTRODE_DATA.forEach((el) => {
+      const w = weights[el.id] ?? (activeSet.has(el.id) ? 0.75 : 0.08);
+      this.channelStim[el.id] = w;
+      this.channelTargetColor[el.id] = activeSet.has(el.id) || w >= 0.45 ? accent : mutedSlate;
+    });
+
+    if (clfData.cameraPos) {
+      this.flyToCamera(clfData.cameraPos, false);
+    }
+  }
+
   updateLiveActivations(channelActivations) {
     if (this.visualMode !== "LIVE_SYNC") return;
     const royalBlue = new THREE.Color("#2563eb");
