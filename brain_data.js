@@ -405,8 +405,8 @@ export const SCROLL_STORIES = [
     title: "뇌파(EEG)로 생존을 결정하는 적응형 BCI 아틀라스",
     subtitle: "2,624회 실측 트라이얼 분석 · 통합 8채널 최적화 · Shelter Mind",
     visualMode: "OVERVIEW_ALL",
-    cameraPos: [0.0, 1.3, 4.1],
-    description: "비가시적인 두피 생체 신호를 실시간 디코딩하여 손을 대지 않고 게임을 제어합니다. 수만 개의 3D 뇌 신경망 Dot을 통해 운동 상상(Motor Imagery) 시 대뇌 피질 어디가 자극되고 색칠되는지 실측 데이터로 증명합니다.",
+    cameraPos: [4.15, 0.55, 2.85],
+    description: "비가시적인 두피 생체 신호를 실시간 디코딩하여 손을 대지 않고 게임을 제어합니다. 삼각형 신경망 와이어프레임과 교차 꼭짓점(Vertex Dots)으로 구성된 3D 뇌 모델을 통해 운동 상상(Motor Imagery) 시 대뇌 피질 어디가 자극되는지 실측 데이터로 증명합니다.",
     metrics: [
       { label: "누적 분석 뇌파", value: "2,624 Trials" },
       { label: "온라인 평균 성공률", value: "96.9% (698/720)" },
@@ -419,7 +419,7 @@ export const SCROLL_STORIES = [
     title: "16채널 풀캡의 한계와 아티팩트 오염 부위 제거",
     subtitle: "안구 깜빡임(Fp1, Fp2) 및 단순 시각 반응(O1, O2) 원천 배제",
     visualMode: "NOISE_HIGHLIGHT",
-    cameraPos: [1.8, 1.1, 3.6],
+    cameraPos: [3.35, 0.95, 3.35],
     description: "16채널 풀캡은 착용에 20분 이상 소요되며, 게임을 보며 눈을 깜빡일 때 전두극(Fp1, Fp2)에서 거대한 EOG 노이즈가 발생합니다. 또한 후두부(O1, O2)는 운동 상상이 아닌 화면의 시각 자극에만 반응합니다. 붉게 표시된 오염 영역을 과감히 소거하여 신호 순도를 높였습니다.",
     metrics: [
       { label: "원천 배제 노이즈 전극", value: "Fp1, Fp2, O1, O2" },
@@ -433,7 +433,7 @@ export const SCROLL_STORIES = [
     title: "다인 피험자 교차 분석 기반 '전체 통합 8채널' 확정",
     subtitle: "T8 · T7 · C4 · C3 · F7 · Cz · P7 · F3",
     visualMode: "CORE_8CH",
-    cameraPos: [0.0, 2.8, 2.7],
+    cameraPos: [0.0, 3.6, 2.85],
     description: "단일 피험자 과적합을 막기 위해 예진·민지·희영 다인 피험자의 뇌파를 교차 분석했습니다. 우반구 최고 변별력(T8 1위, C4 2위)과 좌반구 대칭 핵심(C3, T7), 중심 기준선(Cz), 그리고 전두-두정 운동 기획 연합(F3, F7, P7)을 결합한 최적의 8채널 몽타주를 독자 도출했습니다.",
     metrics: [
       { label: "중요도 1위 전극", value: "T8 (78.34점)" },
@@ -447,8 +447,8 @@ export const SCROLL_STORIES = [
     title: "왼손 운동 상상(LEFT MI) → 우반구 대뇌 피질 자극 점등",
     subtitle: "우반구 C4(일차운동피질) 및 T8(측두 허브) ERD 집중 활성화",
     visualMode: "STIM_LEFT_MI",
-    cameraPos: [3.1, 1.2, 2.2],
-    description: "신경해부학적 교차 지배(Contralateral Control) 원리에 따라, 플레이어가 왼손 움직임을 상상하면 반대쪽인 오른쪽 뇌(C4, T8, Cz)의 신경망 Dot들이 강하게 자극받아 Mu/Beta 대역 탈동기화(ERD)가 발생합니다. 청록색(Cyan)으로 물든 우반구 자극 영역을 확인하세요.",
+    cameraPos: [3.85, 1.0, 2.25],
+    description: "신경해부학적 교차 지배(Contralateral Control) 원리에 따라, 플레이어가 왼손 움직임을 상상하면 반대쪽인 오른쪽 뇌(C4, T8, Cz)의 신경망 메쉬와 꼭짓점들이 강하게 자극받아 Mu/Beta 대역 탈동기화(ERD)가 발생합니다.",
     metrics: [
       { label: "핵심 자극 부위", value: "우반구 C4 · T8" },
       { label: "T8 Mu 파워 변화", value: "+0.113 dB 변별" },
@@ -461,8 +461,8 @@ export const SCROLL_STORIES = [
     title: "오른손 운동 상상(RIGHT MI) → 좌반구 네트워크 자극 점등",
     subtitle: "좌반구 C3(일차운동) · F3(전운동 기획) · T7 · P7 연쇄 활성화",
     visualMode: "STIM_RIGHT_MI",
-    cameraPos: [-3.1, 1.2, 2.2],
-    description: "반대로 오른손 상상을 수행하면 좌반구 감각운동 피질(C3)을 중심으로 전운동 기획 영역(F3, F7), 좌측 측두엽(T7), 두정 체성감각 연합(P7)의 뇌 Dot들이 마젠타/코랄 빛으로 일제히 활성화됩니다.",
+    cameraPos: [-3.85, 1.0, 2.25],
+    description: "반대로 오른손 상상을 수행하면 좌반구 감각운동 피질(C3)을 중심으로 전운동 기획 영역(F3, F7), 좌측 측두엽(T7), 두정 체성감각 연합(P7)의 뇌 메쉬와 꼭짓점들이 앰버 골드 빛으로 일제히 활성화됩니다.",
     metrics: [
       { label: "핵심 자극 부위", value: "좌반구 C3 · T7 · F3 · P7" },
       { label: "C3 RF 중요도", value: "0.0795 (전체 3위)" },
@@ -475,7 +475,7 @@ export const SCROLL_STORIES = [
     title: "4중 안전 관문 파인튜닝 & 하드웨어 합선 리매핑 복원",
     subtitle: "AUC 0.22 → 0.95 도약 및 9~16번 포트 단선 시 100% 성능 복구",
     visualMode: "REMAPPING_RECOVERY",
-    cameraPos: [0.0, 1.8, 3.8],
+    cameraPos: [3.1, 1.35, 3.55],
     description: "일자별 뇌파 드리프트를 해결하기 위해 4중 안전 관문(OOF AUC ≥ 0.60, 좌/우 재현율 검증) 기반 적응형 파인튜닝과 MI 3초 실시간 진폭 정규화를 구축했습니다. 또한 증폭기 9~16번 포트 합선 위기 시 정상 1~8번 포트로 C4·Cz·T8 리드선을 물리적으로 스왑하여 성능을 100% 복원했습니다.",
     metrics: [
       { label: "파인튜닝 최고 AUC", value: "0.35 → 0.95 (+0.60)" },

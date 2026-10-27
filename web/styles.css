@@ -1,27 +1,27 @@
 /* ==========================================================================
    styles.css
-   atlas.taim.best (shadcn/ui minimal aesthetic) & Neural Plexus Brain 테마
+   atlas.taim.best (shadcn/ui Clean White Light Mode) & Neural Plexus Brain 테마
    ========================================================================== */
 
 :root {
-  --bg-canvas: #03060e;
-  --bg-surface: rgba(10, 14, 23, 0.84);
-  --bg-elevated: rgba(17, 23, 36, 0.72);
-  --bg-subtle: rgba(255, 255, 255, 0.03);
+  --bg-canvas: #ffffff;
+  --bg-surface: rgba(255, 255, 255, 0.88);
+  --bg-elevated: #f8fafc;
+  --bg-subtle: #f1f5f9;
 
-  --border: rgba(255, 255, 255, 0.08);
-  --border-hover: rgba(255, 255, 255, 0.16);
-  --border-active: rgba(56, 189, 248, 0.45);
+  --border: #e2e8f0;
+  --border-hover: #cbd5e1;
+  --border-active: #2563eb;
 
-  --text-primary: #f8fafc;
-  --text-secondary: #94a3b8;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
   --text-muted: #64748b;
 
-  --accent-blue: #38bdf8;
-  --accent-cobalt: #2563eb;
-  --accent-amber: #fbbf24;
-  --accent-emerald: #34d399;
-  --accent-rose: #fb7185;
+  --accent-blue: #2563eb;
+  --accent-cobalt: #1d4ed8;
+  --accent-amber: #d97706;
+  --accent-emerald: #059669;
+  --accent-rose: #e11d48;
 
   --radius-sm: 6px;
   --radius-md: 10px;
@@ -50,7 +50,7 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   고정 3D Neural Plexus Brain 배경 뷰포트
+   고정 3D Neural Plexus Brain 배경 뷰포트 (Clean White Background)
 -------------------------------------------------------------------------- */
 #brain-viewport {
   position: fixed;
@@ -58,7 +58,7 @@ html, body {
   width: 100vw;
   height: 100vh;
   z-index: 1;
-  background: radial-gradient(circle at 46% 50%, #091328 0%, #040813 55%, #02040a 100%);
+  background: radial-gradient(circle at 46% 50%, #f8fafc 0%, #ffffff 70%);
 }
 
 #canvas-container {
@@ -86,14 +86,15 @@ html, body {
   display: inline-flex;
   align-items: center;
   padding: 2px 7px;
-  border-radius: 4px;
+  border-radius: 5px;
   font-family: var(--font-mono);
   font-size: 10px;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-primary);
-  background: rgba(6, 10, 19, 0.85);
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid #cbd5e1;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.06);
   cursor: pointer;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
   user-select: none;
@@ -101,25 +102,27 @@ html, body {
 
 .electrode-label.excluded {
   color: var(--text-muted);
-  border-color: rgba(255, 255, 255, 0.06);
+  border-color: #e2e8f0;
+  background: rgba(248, 250, 252, 0.85);
 }
 
 .electrode-label:hover,
 .electrode-label.active-stim {
-  border-color: rgba(56, 189, 248, 0.55);
-  color: #e0f2fe;
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+  background: #eff6ff;
 }
 
 .electrode-label.selected {
-  background: #f8fafc;
-  color: #03060e;
-  border-color: #ffffff;
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
   font-weight: 700;
   z-index: 20;
 }
 
 /* --------------------------------------------------------------------------
-   상단 미니멀 바 (atlas.taim.best 스타일)
+   상단 미니멀 바 (atlas.taim.best Clean Light 스타일)
 -------------------------------------------------------------------------- */
 .top-navbar {
   position: fixed;
@@ -140,6 +143,7 @@ html, body {
   pointer-events: auto;
   background: var(--bg-surface);
   border: 1px solid var(--border);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
   backdrop-filter: blur(16px);
 }
 
@@ -161,7 +165,7 @@ html, body {
 
 .brand-title {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--text-primary);
 }
@@ -204,8 +208,8 @@ html, body {
 }
 
 .mode-tab.active {
-  background: rgba(255, 255, 255, 0.09);
-  color: var(--text-primary);
+  background: #0f172a;
+  color: #ffffff;
   font-weight: 600;
 }
 
@@ -240,6 +244,7 @@ html, body {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
   backdrop-filter: blur(14px);
   pointer-events: none;
   max-width: 340px;
@@ -255,7 +260,7 @@ html, body {
 
 .hud-badge-title {
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-primary);
   margin-top: 2px;
 }
@@ -273,6 +278,7 @@ html, body {
   background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.08);
   backdrop-filter: blur(16px);
 }
 
@@ -304,13 +310,13 @@ html, body {
 
 .tool-btn:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-subtle);
 }
 
 .tool-btn.active {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.14);
+  background: #0f172a;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .explode-control {
@@ -345,7 +351,7 @@ html, body {
 }
 
 /* --------------------------------------------------------------------------
-   MODE 1: 스크롤 스토리텔링 (Scrollytelling - 미니멀 에디토리얼 시트)
+   MODE 1: 스크롤 스토리텔링
 -------------------------------------------------------------------------- */
 .scroll-progress-rail {
   position: fixed;
@@ -390,13 +396,15 @@ html, body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 22px 24px;
+  box-shadow: 0 8px 28px rgba(15, 23, 42, 0.06);
   backdrop-filter: blur(16px);
-  transition: border-color 0.25s, opacity 0.25s;
-  opacity: 0.55;
+  transition: border-color 0.25s, opacity 0.25s, box-shadow 0.25s;
+  opacity: 0.6;
 }
 
 .story-step-card.in-view {
-  border-color: rgba(255, 255, 255, 0.22);
+  border-color: #94a3b8;
+  box-shadow: 0 12px 32px rgba(15, 23, 42, 0.1);
   opacity: 1;
 }
 
@@ -442,7 +450,7 @@ html, body {
 }
 
 .story-metric-box {
-  background: var(--bg-subtle);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 8px 10px;
@@ -458,7 +466,7 @@ html, body {
 .story-metric-value {
   font-family: var(--font-mono);
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
 }
 
@@ -470,19 +478,19 @@ html, body {
 
 .story-jump-btn {
   flex: 1;
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-primary);
-  border: 1px solid var(--border-hover);
+  background: #0f172a;
+  color: #ffffff;
+  border: 1px solid #0f172a;
   padding: 8px 12px;
   border-radius: var(--radius-sm);
   font-size: 11.5px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
-  transition: background 0.15s;
+  transition: opacity 0.15s;
 }
 
 .story-jump-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
+  opacity: 0.88;
 }
 
 /* --------------------------------------------------------------------------
@@ -499,6 +507,7 @@ html, body {
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 18px;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
   backdrop-filter: blur(16px);
   display: flex;
   flex-direction: column;
@@ -510,7 +519,7 @@ html, body {
   width: 4px;
 }
 .atlas-sidebar::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.12);
+  background: #cbd5e1;
   border-radius: 4px;
 }
 
@@ -533,7 +542,7 @@ html, body {
 
 .panel-header h2 {
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: -0.01em;
   margin-top: 2px;
 }
@@ -547,7 +556,7 @@ html, body {
 .filter-pills {
   display: flex;
   gap: 4px;
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-subtle);
   padding: 3px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
@@ -566,8 +575,10 @@ html, body {
 }
 
 .filter-pill.active {
-  background: rgba(255, 255, 255, 0.1);
+  background: #ffffff;
   color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
 }
 
 .region-list {
@@ -577,7 +588,7 @@ html, body {
 }
 
 .region-group-card {
-  background: var(--bg-subtle);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 11px 12px;
@@ -613,7 +624,7 @@ html, body {
   font-size: 11px;
   font-weight: 500;
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  background: #ffffff;
   color: var(--text-secondary);
   cursor: pointer;
   display: flex;
@@ -624,18 +635,18 @@ html, body {
 
 .channel-chip.core {
   color: var(--text-primary);
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: #cbd5e1;
 }
 
 .channel-chip:hover {
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: #64748b;
   color: var(--text-primary);
 }
 
 .channel-chip.selected {
-  background: var(--text-primary);
-  color: #03060e;
-  border-color: #ffffff;
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
   font-weight: 700;
 }
 
@@ -665,7 +676,7 @@ html, body {
   font-family: var(--font-mono);
   font-size: 16px;
   font-weight: 700;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--bg-subtle);
   color: var(--text-primary);
   border: 1px solid var(--border-hover);
 }
@@ -680,13 +691,13 @@ html, body {
 }
 
 .ch-status-tag.core {
-  background: rgba(56, 189, 248, 0.1);
+  background: #eff6ff;
   color: var(--accent-blue);
-  border-color: rgba(56, 189, 248, 0.3);
+  border-color: #bfdbfe;
 }
 
 .ch-status-tag.excluded {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--bg-subtle);
   color: var(--text-muted);
 }
 
@@ -697,7 +708,7 @@ html, body {
 }
 
 .kpi-card {
-  background: var(--bg-subtle);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 9px 11px;
@@ -711,13 +722,13 @@ html, body {
 .kpi-value {
   font-family: var(--font-mono);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   margin-top: 2px;
 }
 
 .inspector-box {
-  background: var(--bg-subtle);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 11px 13px;
@@ -725,7 +736,7 @@ html, body {
 
 .inspector-box h4 {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text-primary);
   margin-bottom: 5px;
 }
@@ -752,7 +763,7 @@ html, body {
 .bar-track {
   width: 100%;
   height: 5px;
-  background: rgba(255, 255, 255, 0.07);
+  background: #e2e8f0;
   border-radius: 999px;
   overflow: hidden;
 }
@@ -770,7 +781,7 @@ html, body {
 .live-telemetry-card,
 .oscilloscope-box,
 .report-section-box {
-  background: var(--bg-subtle);
+  background: var(--bg-elevated);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   padding: 11px 12px;
@@ -797,7 +808,7 @@ html, body {
   padding: 8px 10px;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  background: #ffffff;
   color: var(--text-primary);
   cursor: pointer;
   display: flex;
@@ -820,7 +831,7 @@ html, body {
 .intent-arrow {
   font-family: var(--font-mono);
   font-size: 11.5px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .intent-sub {
@@ -828,10 +839,18 @@ html, body {
   color: var(--text-muted);
 }
 
-.intent-btn:hover,
+.intent-btn:hover {
+  border-color: #94a3b8;
+}
+
 .intent-btn.active {
-  background: rgba(255, 255, 255, 0.09);
-  border-color: rgba(255, 255, 255, 0.24);
+  background: #0f172a;
+  color: #ffffff;
+  border-color: #0f172a;
+}
+
+.intent-btn.active .intent-sub {
+  color: #cbd5e1;
 }
 
 .telemetry-row {
@@ -850,14 +869,15 @@ html, body {
   font-size: 10px;
   padding: 2px 7px;
   border-radius: 4px;
-  background: rgba(255, 255, 255, 0.06);
-  color: var(--text-secondary);
+  background: #e2e8f0;
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .prob-bar-track {
   position: relative;
   height: 8px;
-  background: rgba(255, 255, 255, 0.08);
+  background: #e2e8f0;
   border-radius: 999px;
   overflow: hidden;
 }
@@ -874,7 +894,7 @@ html, body {
   bottom: 0;
   left: 50%;
   width: 1px;
-  background: rgba(255, 255, 255, 0.45);
+  background: #475569;
 }
 
 .telemetry-meta {
@@ -889,7 +909,7 @@ html, body {
 #eeg-waveform-canvas {
   width: 100%;
   height: 88px;
-  background: rgba(3, 6, 14, 0.7);
+  background: #ffffff;
   border-radius: var(--radius-sm);
   border: 1px solid var(--border);
 }
@@ -920,7 +940,7 @@ html, body {
 }
 
 .ch-live-item {
-  background: var(--bg-subtle);
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 6px 8px;
@@ -935,7 +955,7 @@ html, body {
 }
 
 .persona-card {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-hover);
   border-radius: var(--radius-md);
   padding: 13px;
@@ -944,7 +964,7 @@ html, body {
 .persona-badge {
   font-family: var(--font-mono);
   font-size: 9.5px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent-blue);
   letter-spacing: 0.06em;
 }
@@ -969,7 +989,7 @@ html, body {
 }
 
 .p-stat {
-  background: rgba(3, 6, 14, 0.55);
+  background: #ffffff;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   padding: 6px 8px;
@@ -984,7 +1004,7 @@ html, body {
 .p-val {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   margin-top: 2px;
   display: block;
 }
@@ -1003,7 +1023,7 @@ html, body {
   justify-content: space-between;
   padding: 6px 9px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.02);
+  background: #ffffff;
   border: 1px solid var(--border);
   font-size: 11px;
   cursor: pointer;
@@ -1011,17 +1031,17 @@ html, body {
 }
 
 .trial-item:hover {
-  border-color: var(--border-hover);
+  border-color: #64748b;
 }
 
 .mini-action-btn {
-  background: rgba(255, 255, 255, 0.06);
+  background: #ffffff;
   color: var(--text-primary);
   border: 1px solid var(--border-hover);
   border-radius: 4px;
   padding: 2px 7px;
   font-size: 10px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
 }
 
@@ -1047,12 +1067,13 @@ html, body {
 .session-table th {
   color: var(--text-muted);
   font-size: 9.5px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .accent-tag {
   font-family: var(--font-mono);
   font-size: 10px;
+  font-weight: 700;
   color: var(--accent-emerald);
 }
 

@@ -241,13 +241,16 @@
       { id: "F4", rank: 15, isCore8: false, hemisphere: "Right", region: "frontal", pos: [0.72, 0.76, 0.68], anatomicalName: "우측 전운동피질 (Right Premotor - Excluded)", compositeScore: 13.56, singleAuc: 0.532, fdr: 0.00061, rfImportance: 0.0416, powerDiff: 0.028, portOriginal: "Port 5", portRemapped: "Excluded (Swapped to T8)", subjectLogic: "Random Forest 중요도 최하위(0.0416)로, 1위 채널 T8 복원을 위해 물리 포트 양보", description: "우반구에서는 C4와 T8의 기여도가 압도적이므로 F4를 덜어내어 8채널 구성을 최적화했습니다." }
     ];
 
+    const BRAIN_SCALE = 0.76;
+    const DEFAULT_CAM_POS = [4.15, 0.55, 2.85];
+
     const SCROLL_STORIES = [
-      { step: 0, badge: "OVERVIEW // CAPSTONE PROJECT", title: "뇌파(EEG)로 생존을 결정하는 적응형 BCI 아틀라스", subtitle: "2,624회 실측 트라이얼 분석 · 통합 8채널 최적화 · Shelter Mind", visualMode: "OVERVIEW_ALL", cameraPos: [3.45, 0.45, 2.35], description: "비가시적인 두피 생체 신호를 실시간 디코딩하여 손을 대지 않고 게임을 제어합니다. 삼각형 신경망 와이어프레임과 교차 꼭짓점(Vertex Dots)으로 구성된 3D 뇌 모델을 통해 운동 상상(Motor Imagery) 시 대뇌 피질 어디가 자극되는지 실측 데이터로 증명합니다.", metrics: [{ label: "누적 분석 뇌파", value: "2,624 Trials" }, { label: "온라인 평균 성공률", value: "96.9% (698/720)" }, { label: "평균 반응속도", value: "4.84 sec" }] },
-      { step: 1, badge: "STEP 01 // NOISE ELIMINATION", title: "16채널 풀캡의 한계와 아티팩트 오염 부위 제거", subtitle: "안구 깜빡임(Fp1, Fp2) 및 단순 시각 반응(O1, O2) 원천 배제", visualMode: "NOISE_HIGHLIGHT", cameraPos: [2.85, 0.85, 2.85], description: "16채널 풀캡은 착용에 20분 이상 소요되며, 게임을 보며 눈을 깜빡일 때 전두극(Fp1, Fp2)에서 거대한 EOG 노이즈가 발생합니다. 또한 후두부(O1, O2)는 운동 상상이 아닌 화면의 시각 자극에만 반응합니다. 붉게 표시된 오염 영역을 소거하여 신호 순도를 높였습니다.", metrics: [{ label: "배제 노이즈 전극", value: "Fp1, Fp2, O1, O2" }, { label: "7ch 축소 시 문제점", value: "CAR 노이즈 역류 규명" }, { label: "착용 시간 단축", value: "20분 → 5분" }] },
-      { step: 2, badge: "STEP 02 // MULTI-SUBJECT 8CH MONTAGE", title: "다인 피험자 교차 분석 기반 '전체 통합 8채널' 확정", subtitle: "T8 · T7 · C4 · C3 · F7 · Cz · P7 · F3", visualMode: "CORE_8CH", cameraPos: [0.0, 3.1, 2.4], description: "단일 피험자 과적합을 막기 위해 예진·민지·희영 다인 피험자의 뇌파를 교차 분석했습니다. 우반구 최고 변별력(T8 1위, C4 2위)과 좌반구 대칭 핵심(C3, T7), 중심 기준선(Cz), 그리고 전두-두정 운동 기획 연합(F3, F7, P7)을 결합한 최적의 8채널 몽타주를 독자 도출했습니다.", metrics: [{ label: "중요도 1위 전극", value: "T8 (78.34점)" }, { label: "중요도 2위 전극", value: "C4 (40.42점)" }, { label: "모델 피처 압축", value: "420D → 4D (10.8KB)" }] },
-      { step: 3, badge: "STEP 03 // LEFT HAND MOTOR IMAGERY", title: "왼손 운동 상상(LEFT MI) → 우반구 대뇌 피질 자극 점등", subtitle: "우반구 C4(일차운동피질) 및 T8(측두 허브) ERD 집중 활성화", visualMode: "STIM_LEFT_MI", cameraPos: [3.3, 0.9, 1.9], description: "신경해부학적 교차 지배(Contralateral Control) 원리에 따라, 플레이어가 왼손 움직임을 상상하면 반대쪽인 오른쪽 뇌(C4, T8, Cz)의 신경망 메쉬와 꼭짓점들이 강하게 자극받아 Mu/Beta 대역 탈동기화(ERD)가 발생합니다.", metrics: [{ label: "핵심 자극 부위", value: "우반구 C4 · T8" }, { label: "T8 Mu 파워 변화", value: "+0.113 dB 변별" }, { label: "좌측 선택 성공률", value: "95.3% (343/360)" }] },
-      { step: 4, badge: "STEP 04 // RIGHT HAND MOTOR IMAGERY", title: "오른손 운동 상상(RIGHT MI) → 좌반구 네트워크 자극 점등", subtitle: "좌반구 C3(일차운동) · F3(전운동 기획) · T7 · P7 연쇄 활성화", visualMode: "STIM_RIGHT_MI", cameraPos: [-3.3, 0.9, 1.9], description: "반대로 오른손 상상을 수행하면 좌반구 감각운동 피질(C3)을 중심으로 전운동 기획 영역(F3, F7), 좌측 측두엽(T7), 두정 체성감각 연합(P7)의 뇌 메쉬와 꼭짓점들이 앰버 골드 빛으로 일제히 활성화됩니다.", metrics: [{ label: "핵심 자극 부위", value: "좌반구 C3 · T7 · F3 · P7" }, { label: "C3 RF 중요도", value: "0.0795 (전체 3위)" }, { label: "우측 선택 성공률", value: "98.6% (355/360)" }] },
-      { step: 5, badge: "STEP 05 // SAFETY GATE & HARDWARE REMAPPING", title: "4중 안전 관문 파인튜닝 & 하드웨어 합선 리매핑 복원", subtitle: "AUC 0.22 → 0.95 도약 및 9~16번 포트 단선 시 100% 성능 복구", visualMode: "REMAPPING_RECOVERY", cameraPos: [2.6, 1.2, 3.1], description: "일자별 뇌파 드리프트를 해결하기 위해 4중 안전 관문(OOF AUC ≥ 0.60, 좌/우 재현율 검증) 기반 적응형 파인튜닝과 MI 3초 실시간 진폭 정규화를 구축했습니다. 또한 증폭기 9~16번 포트 합선 위기 시 정상 1~8번 포트로 C4·Cz·T8 리드선을 물리적으로 스왑하여 성능을 100% 복원했습니다.", metrics: [{ label: "파인튜닝 최고 AUC", value: "0.35 → 0.95 (+0.60)" }, { label: "포트 리매핑 복원율", value: "100% (손실 0.0%p)" }, { label: "실시간 추론 주기", value: "0.25s 슬라이딩" }] }
+      { step: 0, badge: "OVERVIEW // CAPSTONE PROJECT", title: "뇌파(EEG)로 생존을 결정하는 적응형 BCI 아틀라스", subtitle: "2,624회 실측 트라이얼 분석 · 통합 8채널 최적화 · Shelter Mind", visualMode: "OVERVIEW_ALL", cameraPos: [4.15, 0.55, 2.85], description: "비가시적인 두피 생체 신호를 실시간 디코딩하여 손을 대지 않고 게임을 제어합니다. 삼각형 신경망 와이어프레임과 교차 꼭짓점(Vertex Dots)으로 구성된 3D 뇌 모델을 통해 운동 상상(Motor Imagery) 시 대뇌 피질 어디가 자극되는지 실측 데이터로 증명합니다.", metrics: [{ label: "누적 분석 뇌파", value: "2,624 Trials" }, { label: "온라인 평균 성공률", value: "96.9% (698/720)" }, { label: "평균 반응속도", value: "4.84 sec" }] },
+      { step: 1, badge: "STEP 01 // NOISE ELIMINATION", title: "16채널 풀캡의 한계와 아티팩트 오염 부위 제거", subtitle: "안구 깜빡임(Fp1, Fp2) 및 단순 시각 반응(O1, O2) 원천 배제", visualMode: "NOISE_HIGHLIGHT", cameraPos: [3.35, 0.95, 3.35], description: "16채널 풀캡은 착용에 20분 이상 소요되며, 게임을 보며 눈을 깜빡일 때 전두극(Fp1, Fp2)에서 거대한 EOG 노이즈가 발생합니다. 또한 후두부(O1, O2)는 운동 상상이 아닌 화면의 시각 자극에만 반응합니다. 붉게 표시된 오염 영역을 소거하여 신호 순도를 높였습니다.", metrics: [{ label: "배제 노이즈 전극", value: "Fp1, Fp2, O1, O2" }, { label: "7ch 축소 시 문제점", value: "CAR 노이즈 역류 규명" }, { label: "착용 시간 단축", value: "20분 → 5분" }] },
+      { step: 2, badge: "STEP 02 // MULTI-SUBJECT 8CH MONTAGE", title: "다인 피험자 교차 분석 기반 '전체 통합 8채널' 확정", subtitle: "T8 · T7 · C4 · C3 · F7 · Cz · P7 · F3", visualMode: "CORE_8CH", cameraPos: [0.0, 3.6, 2.85], description: "단일 피험자 과적합을 막기 위해 예진·민지·희영 다인 피험자의 뇌파를 교차 분석했습니다. 우반구 최고 변별력(T8 1위, C4 2위)과 좌반구 대칭 핵심(C3, T7), 중심 기준선(Cz), 그리고 전두-두정 운동 기획 연합(F3, F7, P7)을 결합한 최적의 8채널 몽타주를 독자 도출했습니다.", metrics: [{ label: "중요도 1위 전극", value: "T8 (78.34점)" }, { label: "중요도 2위 전극", value: "C4 (40.42점)" }, { label: "모델 피처 압축", value: "420D → 4D (10.8KB)" }] },
+      { step: 3, badge: "STEP 03 // LEFT HAND MOTOR IMAGERY", title: "왼손 운동 상상(LEFT MI) → 우반구 대뇌 피질 자극 점등", subtitle: "우반구 C4(일차운동피질) 및 T8(측두 허브) ERD 집중 활성화", visualMode: "STIM_LEFT_MI", cameraPos: [3.85, 1.0, 2.25], description: "신경해부학적 교차 지배(Contralateral Control) 원리에 따라, 플레이어가 왼손 움직임을 상상하면 반대쪽인 오른쪽 뇌(C4, T8, Cz)의 신경망 메쉬와 꼭짓점들이 강하게 자극받아 Mu/Beta 대역 탈동기화(ERD)가 발생합니다.", metrics: [{ label: "핵심 자극 부위", value: "우반구 C4 · T8" }, { label: "T8 Mu 파워 변화", value: "+0.113 dB 변별" }, { label: "좌측 선택 성공률", value: "95.3% (343/360)" }] },
+      { step: 4, badge: "STEP 04 // RIGHT HAND MOTOR IMAGERY", title: "오른손 운동 상상(RIGHT MI) → 좌반구 네트워크 자극 점등", subtitle: "좌반구 C3(일차운동) · F3(전운동 기획) · T7 · P7 연쇄 활성화", visualMode: "STIM_RIGHT_MI", cameraPos: [-3.85, 1.0, 2.25], description: "반대로 오른손 상상을 수행하면 좌반구 감각운동 피질(C3)을 중심으로 전운동 기획 영역(F3, F7), 좌측 측두엽(T7), 두정 체성감각 연합(P7)의 뇌 메쉬와 꼭짓점들이 앰버 골드 빛으로 일제히 활성화됩니다.", metrics: [{ label: "핵심 자극 부위", value: "좌반구 C3 · T7 · F3 · P7" }, { label: "C3 RF 중요도", value: "0.0795 (전체 3위)" }, { label: "우측 선택 성공률", value: "98.6% (355/360)" }] },
+      { step: 5, badge: "STEP 05 // SAFETY GATE & HARDWARE REMAPPING", title: "4중 안전 관문 파인튜닝 & 하드웨어 합선 리매핑 복원", subtitle: "AUC 0.22 → 0.95 도약 및 9~16번 포트 단선 시 100% 성능 복구", visualMode: "REMAPPING_RECOVERY", cameraPos: [3.1, 1.35, 3.55], description: "일자별 뇌파 드리프트를 해결하기 위해 4중 안전 관문(OOF AUC ≥ 0.60, 좌/우 재현율 검증) 기반 적응형 파인튜닝과 MI 3초 실시간 진폭 정규화를 구축했습니다. 또한 증폭기 9~16번 포트 합선 위기 시 정상 1~8번 포트로 C4·Cz·T8 리드선을 물리적으로 스왑하여 성능을 100% 복원했습니다.", metrics: [{ label: "파인튜닝 최고 AUC", value: "0.35 → 0.95 (+0.60)" }, { label: "포트 리매핑 복원율", value: "100% (손실 0.0%p)" }, { label: "실시간 추론 주기", value: "0.25s 슬라이딩" }] }
     ];
 
     const ONLINE_SESSIONS = [
@@ -277,7 +280,7 @@
 
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(38, this.width / this.height, 0.1, 100);
-        this.camera.position.set(3.45, 0.45, 2.35);
+        this.camera.position.set(...DEFAULT_CAM_POS);
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
         this.renderer.setSize(this.width, this.height);
@@ -288,11 +291,11 @@
         this.controls.enableDamping = true;
         this.controls.dampingFactor = 0.05;
         this.controls.enablePan = false;
-        this.controls.minDistance = 2.2;
-        this.controls.maxDistance = 6.8;
-        this.controls.target.set(0, -0.05, 0);
+        this.controls.minDistance = 2.4;
+        this.controls.maxDistance = 7.5;
+        this.controls.target.set(0, -0.04, 0);
 
-        this.targetCameraPos = new THREE.Vector3(3.45, 0.45, 2.35);
+        this.targetCameraPos = new THREE.Vector3(...DEFAULT_CAM_POS);
         this.isCameraAnimating = false;
         this.autoRotate = true;
         this.visualMode = "OVERVIEW_ALL";
@@ -304,11 +307,12 @@
         this.channelStim = {};
         this.channelTargetColor = {};
         ELECTRODE_DATA.forEach((el) => {
-          this.channelStim[el.id] = el.isCore8 ? 0.55 : 0.15;
-          this.channelTargetColor[el.id] = new THREE.Color("#38bdf8");
+          this.channelStim[el.id] = el.isCore8 ? 0.65 : 0.18;
+          this.channelTargetColor[el.id] = new THREE.Color("#2563eb");
         });
 
         this.brainGroup = new THREE.Group();
+        this.brainGroup.scale.setScalar(BRAIN_SCALE);
         this.scene.add(this.brainGroup);
         this.electrodeMeshes = [];
         this.electrodeMap = {};
@@ -329,11 +333,11 @@
         const c = document.createElement("canvas");
         c.width = size; c.height = size;
         const ctx = c.getContext("2d");
-        const g = ctx.createRadialGradient(32, 32, 1, 32, 32, 32);
+        const g = ctx.createRadialGradient(32, 32, 2, 32, 32, 32);
         g.addColorStop(0.0, "rgba(255,255,255,1)");
-        g.addColorStop(0.35, "rgba(180,225,255,0.95)");
-        g.addColorStop(0.7, "rgba(59,130,246,0.35)");
-        g.addColorStop(1.0, "rgba(0,0,0,0)");
+        g.addColorStop(0.65, "rgba(255,255,255,0.95)");
+        g.addColorStop(0.88, "rgba(255,255,255,0.25)");
+        g.addColorStop(1.0, "rgba(255,255,255,0)");
         ctx.fillStyle = g;
         ctx.fillRect(0, 0, size, size);
         this.nodeTexture = new THREE.CanvasTexture(c);
@@ -492,9 +496,8 @@
         this.lineMaterial = new THREE.LineBasicMaterial({
           vertexColors: true,
           transparent: true,
-          opacity: 0.46,
-          blending: THREE.AdditiveBlending,
-          depthWrite: false
+          opacity: 0.52,
+          blending: THREE.NormalBlending
         });
         this.brainGroup.add(new THREE.LineSegments(this.lineGeometry, this.lineMaterial));
 
@@ -503,28 +506,28 @@
         this.nodeGeometry.setAttribute("color", new THREE.BufferAttribute(new Float32Array(numVerts * 3), 3));
 
         this.nodeMaterial = new THREE.PointsMaterial({
-          size: 0.042,
+          size: 0.032,
           map: this.nodeTexture,
           vertexColors: true,
           transparent: true,
-          opacity: 0.95,
-          blending: THREE.AdditiveBlending,
+          opacity: 0.92,
+          blending: THREE.NormalBlending,
           depthWrite: false
         });
         this.brainGroup.add(new THREE.Points(this.nodeGeometry, this.nodeMaterial));
       }
 
       _buildElectrodeNodes() {
-        const sphereGeo = new THREE.SphereGeometry(0.036, 16, 16);
-        const ringGeo = new THREE.RingGeometry(0.052, 0.068, 24);
+        const sphereGeo = new THREE.SphereGeometry(0.038, 16, 16);
+        const ringGeo = new THREE.RingGeometry(0.054, 0.070, 24);
         ELECTRODE_DATA.forEach((el) => {
           const g = new THREE.Group();
           g.position.set(...el.pos);
-          const c = el.isCore8 ? 0x60a5fa : 0x475569;
-          const mesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: 0.95 }));
+          const c = el.isCore8 ? 0x2563eb : 0x94a3b8;
+          const mesh = new THREE.Mesh(sphereGeo, new THREE.MeshBasicMaterial({ color: c, transparent: true, opacity: el.isCore8 ? 0.95 : 0.45 }));
           mesh.userData = { electrodeId: el.id };
           g.add(mesh);
-          const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide, transparent: true, opacity: 0.5, blending: THREE.AdditiveBlending }));
+          const ring = new THREE.Mesh(ringGeo, new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide, transparent: true, opacity: el.isCore8 ? 0.45 : 0.2 }));
           ring.lookAt(g.position.clone().multiplyScalar(2));
           g.add(ring);
           this.brainGroup.add(g);
@@ -544,41 +547,41 @@
 
       applyVisualMode(mode) {
         this.visualMode = mode;
-        const iceCyan = new THREE.Color("#38bdf8"), brightWhiteBlue = new THREE.Color("#e0f2fe"), coralRose = new THREE.Color("#fb7185"), amberGold = new THREE.Color("#fbbf24"), emerald = new THREE.Color("#34d399"), deepCobalt = new THREE.Color("#1d4ed8");
+        const royalBlue = new THREE.Color("#2563eb"), deepIndigo = new THREE.Color("#1d4ed8"), crimsonRose = new THREE.Color("#e11d48"), amberOrange = new THREE.Color("#d97706"), emerald = new THREE.Color("#059669"), mutedSlate = new THREE.Color("#94a3b8");
         ELECTRODE_DATA.forEach((el) => {
           if (mode === "OVERVIEW_ALL") {
-            this.channelStim[el.id] = el.isCore8 ? 0.62 : 0.35;
-            this.channelTargetColor[el.id] = el.isCore8 ? iceCyan : deepCobalt;
+            this.channelStim[el.id] = el.isCore8 ? 0.72 : 0.35;
+            this.channelTargetColor[el.id] = el.isCore8 ? royalBlue : mutedSlate;
           } else if (mode === "NOISE_HIGHLIGHT") {
             const isN = ["Fp1","Fp2","O1","O2","P8","F8"].includes(el.id);
-            this.channelStim[el.id] = isN ? 0.98 : 0.12;
-            this.channelTargetColor[el.id] = isN ? coralRose : deepCobalt;
+            this.channelStim[el.id] = isN ? 1.0 : 0.12;
+            this.channelTargetColor[el.id] = isN ? crimsonRose : mutedSlate;
           } else if (mode === "CORE_8CH") {
-            this.channelStim[el.id] = el.isCore8 ? 0.92 : 0.08;
-            this.channelTargetColor[el.id] = el.isCore8 ? brightWhiteBlue : deepCobalt;
+            this.channelStim[el.id] = el.isCore8 ? 0.96 : 0.08;
+            this.channelTargetColor[el.id] = el.isCore8 ? deepIndigo : mutedSlate;
           } else if (mode === "STIM_LEFT_MI") {
             const isR = ["T8","C4","Cz"].includes(el.id);
-            this.channelStim[el.id] = el.id === "T8" || el.id === "C4" ? 1.0 : el.id === "Cz" ? 0.72 : 0.08;
-            this.channelTargetColor[el.id] = isR ? iceCyan : deepCobalt;
+            this.channelStim[el.id] = el.id === "T8" || el.id === "C4" ? 1.0 : el.id === "Cz" ? 0.75 : 0.08;
+            this.channelTargetColor[el.id] = isR ? royalBlue : mutedSlate;
           } else if (mode === "STIM_RIGHT_MI") {
             const isL = ["C3","T7","F3","F7","P7","Cz"].includes(el.id);
-            this.channelStim[el.id] = ["C3","T7","F3"].includes(el.id) ? 1.0 : isL ? 0.82 : 0.08;
-            this.channelTargetColor[el.id] = isL ? amberGold : deepCobalt;
+            this.channelStim[el.id] = ["C3","T7","F3"].includes(el.id) ? 1.0 : isL ? 0.85 : 0.08;
+            this.channelTargetColor[el.id] = isL ? amberOrange : mutedSlate;
           } else if (mode === "REMAPPING_RECOVERY") {
             const isHero = ["T8","C4","Cz","P7"].includes(el.id);
             this.channelStim[el.id] = isHero ? 1.0 : el.isCore8 ? 0.55 : 0.08;
-            this.channelTargetColor[el.id] = isHero ? emerald : el.isCore8 ? iceCyan : deepCobalt;
+            this.channelTargetColor[el.id] = isHero ? emerald : el.isCore8 ? royalBlue : mutedSlate;
           }
         });
       }
 
       updateLiveActivations(acts) {
         if (this.visualMode !== "LIVE_SYNC") return;
-        const iceCyan = new THREE.Color("#38bdf8"), amberGold = new THREE.Color("#fbbf24"), emerald = new THREE.Color("#34d399");
+        const royalBlue = new THREE.Color("#2563eb"), amberOrange = new THREE.Color("#d97706"), emerald = new THREE.Color("#059669");
         ELECTRODE_DATA.forEach((el) => {
           const a = acts?.[el.id] ?? 0.18;
           this.channelStim[el.id] = el.isCore8 ? a : a * 0.25;
-          this.channelTargetColor[el.id] = el.hemisphere === "Right" ? iceCyan : el.hemisphere === "Left" ? amberGold : emerald;
+          this.channelTargetColor[el.id] = el.hemisphere === "Right" ? royalBlue : el.hemisphere === "Left" ? amberOrange : emerald;
         });
       }
 
@@ -588,17 +591,17 @@
         if (!entry) return;
         const elData = entry.data;
         if (this.visualMode === "ATLAS_EXPLORER") {
-          const activeCol = elData.isCore8 ? new THREE.Color("#38bdf8") : new THREE.Color("#fb7185");
-          const dimCol = new THREE.Color("#1d4ed8");
+          const activeCol = elData.isCore8 ? new THREE.Color("#2563eb") : new THREE.Color("#e11d48");
+          const dimCol = new THREE.Color("#94a3b8");
           ELECTRODE_DATA.forEach((el) => {
-            this.channelStim[el.id] = el.id === id ? 1.0 : el.region === elData.region ? 0.65 : 0.10;
+            this.channelStim[el.id] = el.id === id ? 1.0 : el.region === elData.region ? 0.68 : 0.10;
             this.channelTargetColor[el.id] = (el.id === id || el.region === elData.region) ? activeCol : dimCol;
           });
         }
         if (fly) {
-          const p = new THREE.Vector3(...elData.pos).normalize().multiplyScalar(3.8);
-          p.y = Math.max(0.25, p.y + 0.25);
-          if (Math.abs(p.x) < 0.8) p.x = elData.hemisphere === "Left" ? -2.2 : 2.2;
+          const p = new THREE.Vector3(...elData.pos).normalize().multiplyScalar(4.2);
+          p.y = Math.max(0.35, p.y + 0.3);
+          if (Math.abs(p.x) < 0.9) p.x = elData.hemisphere === "Left" ? -2.5 : 2.5;
           this.flyToCamera(p, false);
         }
         if (this.onSelectElectrode) this.onSelectElectrode(elData);
@@ -654,7 +657,7 @@
         const numVerts = this.vertices.length;
         const nodePosArr = this.nodeGeometry.attributes.position.array;
         const nodeColArr = this.nodeGeometry.attributes.color.array;
-        const baseR = 0.09, baseG = 0.24, baseB = 0.68;
+        const baseR = 0.56, baseG = 0.64, baseB = 0.74;
 
         for (let i = 0; i < numVerts; i++) {
           const v = this.vertices[i], bp = v.basePos;
@@ -671,14 +674,14 @@
           const c2 = this.vertNearestCh2[i], w2 = this.vertWeight2[i];
           const s1 = stimArr[c1] * w1, s2 = stimArr[c2] * w2;
           const stim = Math.min(1.0, s1 + s2);
-          const ridgeGlow = v.ridgeBoost * 0.42;
-          const pulse = 0.90 + 0.10 * Math.sin(elapsed * 2.6 - bp.z * 2.5);
-          const intensity = Math.min(1.2, (stim * 0.95 + ridgeGlow) * pulse);
+          const ridgeBoost = v.ridgeBoost * 0.35;
+          const pulse = 0.92 + 0.08 * Math.sin(elapsed * 2.6 - bp.z * 2.5);
+          const blend = Math.min(1.0, (stim * 0.92 + ridgeBoost) * pulse);
           const dom = s1 >= s2 ? c1 : c2;
 
-          nodeColArr[i3] = baseR * (1 - intensity * 0.7) + colR[dom] * intensity + ridgeGlow * 0.35;
-          nodeColArr[i3 + 1] = baseG * (1 - intensity * 0.6) + colG[dom] * intensity + ridgeGlow * 0.45;
-          nodeColArr[i3 + 2] = baseB * (1 - intensity * 0.5) + colB[dom] * intensity + ridgeGlow * 0.55;
+          nodeColArr[i3] = baseR * (1 - blend) + colR[dom] * blend;
+          nodeColArr[i3 + 1] = baseG * (1 - blend) + colG[dom] * blend;
+          nodeColArr[i3 + 2] = baseB * (1 - blend) + colB[dom] * blend;
         }
         this.nodeGeometry.attributes.position.needsUpdate = true;
         this.nodeGeometry.attributes.color.needsUpdate = true;
@@ -712,6 +715,7 @@
           const sc = isSel ? 1.35 : 0.8 + stim * 0.35;
           entry.mesh.scale.setScalar(sc);
           entry.ring.scale.setScalar(sc * 1.15);
+          entry.ring.material.opacity = isSel ? 0.85 : 0.2 + stim * 0.45;
 
           const labelEl = this.labelElements[el.id];
           if (labelEl) {
@@ -719,7 +723,7 @@
             entry.group.getWorldPosition(tempV);
             const camDist = tempV.distanceTo(this.camera.position);
             tempV.project(this.camera);
-            labelEl.style.opacity = (tempV.z > 1 || camDist > 4.9) ? "0.15" : (stim > 0.5 || isSel ? "0.95" : "0.45");
+            labelEl.style.opacity = (tempV.z > 1 || camDist > 5.4) ? "0.2" : (stim > 0.5 || isSel ? "0.98" : "0.55");
             const x = (tempV.x * 0.5 + 0.5) * this.width;
             const y = (-tempV.y * 0.5 + 0.5) * this.height;
             labelEl.style.display = "inline-flex";
@@ -835,12 +839,12 @@
         atlas3D.selectElectrode(selectedElectrode.id, true);
       } else if (mode === "live") {
         atlas3D.visualMode = "LIVE_SYNC";
-        atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+        atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
         updateHudBadge("Live Stream — Real-EEG Cortical Mesh Activation");
       } else {
         window.scrollTo({ top: 0, behavior: "smooth" });
         atlas3D.applyVisualMode("OVERVIEW_ALL");
-        atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+        atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
       }
     };
 
@@ -901,7 +905,7 @@
         item.addEventListener("click", () => {
           const dir = item.getAttribute("data-dir");
           atlas3D.applyVisualMode(dir === "LEFT" ? "STIM_LEFT_MI" : "STIM_RIGHT_MI");
-          atlas3D.flyToCamera(dir === "LEFT" ? [3.3, 0.9, 1.9] : [-3.3, 0.9, 1.9], false);
+          atlas3D.flyToCamera(dir === "LEFT" ? [3.85, 1.0, 2.25] : [-3.85, 1.0, 2.25], false);
         });
       });
     };
@@ -913,11 +917,11 @@
         const stim = btn.getAttribute("data-stim");
         document.querySelectorAll(".floating-atlas-toolbar [data-stim]").forEach((b) => b.classList.toggle("active", b === btn));
         atlas3D.applyVisualMode(stim);
-        if (stim === "STIM_LEFT_MI") atlas3D.flyToCamera([3.3, 0.9, 1.9], false);
-        else if (stim === "STIM_RIGHT_MI") atlas3D.flyToCamera([-3.3, 0.9, 1.9], false);
-        else if (stim === "CORE_8CH") atlas3D.flyToCamera([0.0, 3.1, 2.4], false);
-        else if (stim === "NOISE_HIGHLIGHT") atlas3D.flyToCamera([2.85, 0.85, 2.85], false);
-        else atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+        if (stim === "STIM_LEFT_MI") atlas3D.flyToCamera([3.85, 1.0, 2.25], false);
+        else if (stim === "STIM_RIGHT_MI") atlas3D.flyToCamera([-3.85, 1.0, 2.25], false);
+        else if (stim === "CORE_8CH") atlas3D.flyToCamera([0.0, 3.6, 2.85], false);
+        else if (stim === "NOISE_HIGHLIGHT") atlas3D.flyToCamera([3.35, 0.95, 3.35], false);
+        else atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
       });
     });
 
@@ -932,7 +936,7 @@
     document.getElementById("reset-cam-btn").addEventListener("click", () => {
       explodeSlider.value = "0";
       atlas3D.setExplodeFactor(0);
-      atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+      atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
     });
     document.querySelectorAll(".filter-pill").forEach((p) => p.addEventListener("click", () => {
       document.querySelectorAll(".filter-pill").forEach((x) => x.classList.remove("active"));
@@ -1011,7 +1015,7 @@
       const ctx = cvs.getContext("2d");
       ctx.clearRect(0, 0, cvs.width, cvs.height);
       const drawW = (arr, col, yOff) => {
-        ctx.strokeStyle = col; ctx.lineWidth = 1.5; ctx.beginPath();
+        ctx.strokeStyle = col; ctx.lineWidth = 1.6; ctx.beginPath();
         arr.forEach((v, i) => {
           const x = (i / (arr.length - 1)) * cvs.width;
           const y = Math.max(6, Math.min(cvs.height - 6, yOff - (v - 8.5) * 6.0));
@@ -1019,8 +1023,8 @@
         });
         ctx.stroke();
       };
-      drawW(c4Hist, "#38bdf8", cvs.height * 0.36);
-      drawW(c3Hist, "#fbbf24", cvs.height * 0.68);
+      drawW(c4Hist, "#2563eb", cvs.height * 0.36);
+      drawW(c3Hist, "#d97706", cvs.height * 0.68);
 
       CORE_8_IDS.forEach((id) => {
         const act = Math.round((state.channel_activations?.[id] || 0.2) * 100);

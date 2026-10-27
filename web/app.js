@@ -1,13 +1,14 @@
 /**
  * app.js
  * ======
- * Shelter Mind 3D Neural Plexus Atlas 메인 컨트롤러 (atlas.taim.best 미니멀 UI)
+ * Shelter Mind 3D Neural Plexus Atlas 메인 컨트롤러 (Clean White Light UI)
  */
 
 import { BRAIN_REGIONS, ELECTRODE_DATA, ONLINE_SESSIONS, SCROLL_STORIES } from "./brain_data.js";
 import { BrainAtlas3D } from "./brain_atlas_3d.js";
 
 const CORE_8_IDS = ["T8", "T7", "C4", "C3", "F7", "Cz", "P7", "F3"];
+const DEFAULT_CAM_POS = [4.15, 0.55, 2.85];
 
 class BrainAtlasApp {
   constructor() {
@@ -53,12 +54,12 @@ class BrainAtlasApp {
     if (!container) return;
 
     const lateralViewPos = [
-      [3.45, 0.45, 2.35],
-      [2.85, 0.85, 2.85],
-      [0.0, 3.1, 2.4],
-      [3.3, 0.9, 1.9],
-      [-3.3, 0.9, 1.9],
-      [2.6, 1.2, 3.1]
+      DEFAULT_CAM_POS,
+      [3.35, 0.95, 3.35],
+      [0.0, 3.65, 2.85],
+      [3.85, 1.05, 2.25],
+      [-3.85, 1.05, 2.25],
+      [3.15, 1.35, 3.55]
     ];
 
     container.innerHTML = SCROLL_STORIES.map((st, idx) => `
@@ -96,7 +97,7 @@ class BrainAtlasApp {
             const story = SCROLL_STORIES[stepIdx];
             if (story) {
               this.atlas3D.applyVisualMode(story.visualMode);
-              this.atlas3D.flyToCamera(lateralViewPos[stepIdx] || story.cameraPos, stepIdx === 0);
+              this.atlas3D.flyToCamera(lateralViewPos[stepIdx] || DEFAULT_CAM_POS, stepIdx === 0);
               this.syncBottomToolbarActive(story.visualMode);
               this.updateHudBadge(`${story.badge} — ${story.subtitle}`);
             }
@@ -189,7 +190,7 @@ class BrainAtlasApp {
           <div class="ch-circle">${el.id}</div>
           <div>
             <div class="panel-kicker">${el.hemisphere} Hemisphere · Rank #${el.rank} / 16</div>
-            <h2 style="font-size:14px; font-weight:600; margin-top:2px;">${el.anatomicalName}</h2>
+            <h2 style="font-size:14px; font-weight:700; margin-top:2px;">${el.anatomicalName}</h2>
           </div>
         </div>
         <span class="ch-status-tag ${el.isCore8 ? "core" : "excluded"}">
@@ -292,7 +293,7 @@ class BrainAtlasApp {
             <tr>
               <td><strong>${s.id}</strong></td>
               <td>${s.trials}</td>
-              <td style="font-weight:600">${s.acc.toFixed(1)}%</td>
+              <td style="font-weight:700">${s.acc.toFixed(1)}%</td>
               <td>${s.rt.toFixed(2)}s</td>
               <td style="color:var(--text-secondary)">${s.gate}</td>
             </tr>
@@ -326,11 +327,11 @@ class BrainAtlasApp {
         const dir = item.getAttribute("data-trial-dir");
         if (dir === "LEFT") {
           this.atlas3D.applyVisualMode("STIM_LEFT_MI");
-          this.atlas3D.flyToCamera([3.3, 0.9, 1.9], false);
+          this.atlas3D.flyToCamera([3.85, 1.05, 2.25], false);
           this.updateHudBadge("Left Hand MI — Right Hemisphere (C4 · T8) Activated");
         } else {
           this.atlas3D.applyVisualMode("STIM_RIGHT_MI");
-          this.atlas3D.flyToCamera([-3.3, 0.9, 1.9], false);
+          this.atlas3D.flyToCamera([-3.85, 1.05, 2.25], false);
           this.updateHudBadge("Right Hand MI — Left Hemisphere (C3 · T7 · F3) Activated");
         }
       });
@@ -346,7 +347,7 @@ class BrainAtlasApp {
 
     ctx.clearRect(0, 0, w, h);
 
-    ctx.strokeStyle = "rgba(255, 255, 255, 0.06)";
+    ctx.strokeStyle = "#e2e8f0";
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, h / 2);
@@ -355,7 +356,7 @@ class BrainAtlasApp {
 
     const drawLine = (arr, color, yOffset) => {
       ctx.strokeStyle = color;
-      ctx.lineWidth = 1.5;
+      ctx.lineWidth = 1.6;
       ctx.beginPath();
       for (let i = 0; i < arr.length; i++) {
         const x = (i / (arr.length - 1)) * w;
@@ -367,8 +368,8 @@ class BrainAtlasApp {
       ctx.stroke();
     };
 
-    drawLine(this.c4WaveHistory, "#38bdf8", h * 0.36);
-    drawLine(this.c3WaveHistory, "#fbbf24", h * 0.68);
+    drawLine(this.c4WaveHistory, "#2563eb", h * 0.36);
+    drawLine(this.c3WaveHistory, "#d97706", h * 0.68);
   }
 
   startLiveTelemetryLoop() {
@@ -490,12 +491,12 @@ class BrainAtlasApp {
       this.atlas3D.selectElectrode(this.selectedElectrode.id, true);
     } else if (mode === "live") {
       this.atlas3D.visualMode = "LIVE_SYNC";
-      this.atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+      this.atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
       this.updateHudBadge("Live Stream — Real-EEG Cortical Mesh Activation");
     } else {
       window.scrollTo({ top: 0, behavior: "smooth" });
       this.atlas3D.applyVisualMode("OVERVIEW_ALL");
-      this.atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+      this.atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
     }
   }
 
@@ -519,19 +520,19 @@ class BrainAtlasApp {
         this.atlas3D.applyVisualMode(stim);
 
         if (stim === "STIM_LEFT_MI") {
-          this.atlas3D.flyToCamera([3.3, 0.9, 1.9], false);
+          this.atlas3D.flyToCamera([3.85, 1.05, 2.25], false);
           this.updateHudBadge("Left Hand MI — Right Sensorimotor (C4 · T8)");
         } else if (stim === "STIM_RIGHT_MI") {
-          this.atlas3D.flyToCamera([-3.3, 0.9, 1.9], false);
+          this.atlas3D.flyToCamera([-3.85, 1.05, 2.25], false);
           this.updateHudBadge("Right Hand MI — Left Sensorimotor (C3 · T7 · F3)");
         } else if (stim === "CORE_8CH") {
-          this.atlas3D.flyToCamera([0.0, 3.1, 2.4], false);
+          this.atlas3D.flyToCamera([0.0, 3.65, 2.85], false);
           this.updateHudBadge("Confirmed 8-Channel Montage (T8, T7, C4, C3, F7, Cz, P7, F3)");
         } else if (stim === "NOISE_HIGHLIGHT") {
-          this.atlas3D.flyToCamera([2.85, 0.85, 2.85], false);
+          this.atlas3D.flyToCamera([3.35, 0.95, 3.35], false);
           this.updateHudBadge("Excluded Noise Channels (Fp1, Fp2, O1, O2)");
         } else {
-          this.atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+          this.atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
           this.updateHudBadge("3D Neural Plexus Atlas — 8-Channel Adaptive MI-BCI");
         }
       });
@@ -558,7 +559,7 @@ class BrainAtlasApp {
       resetCamBtn.addEventListener("click", () => {
         if (explodeSlider) explodeSlider.value = "0";
         this.atlas3D.setExplodeFactor(0);
-        this.atlas3D.flyToCamera([3.45, 0.45, 2.35], true);
+        this.atlas3D.flyToCamera(DEFAULT_CAM_POS, true);
       });
     }
 
