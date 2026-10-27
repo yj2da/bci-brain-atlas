@@ -1029,8 +1029,8 @@
     };
 
     const renderClassifiersDirectory = () => {
-      const clfListEl = document.getElementById("classifier-list-container");
-      const bundleListEl = document.getElementById("bundle-list-container");
+      const clfListEl = document.getElementById("clf-directory-list") || document.getElementById("classifier-list-container");
+      const bundleListEl = document.getElementById("participant-bundles-list") || document.getElementById("bundle-list-container");
       if (clfListEl) {
         clfListEl.innerHTML = INDIVIDUAL_CLASSIFIERS.map((clf) => {
           const isSel = selectedClassifier?.id === clf.id;
@@ -1098,7 +1098,7 @@
     };
 
     const renderClassifierRightPanel = () => {
-      const container = document.getElementById("classifier-inspector");
+      const container = document.getElementById("classifier-right-inspector") || document.getElementById("classifier-inspector");
       if (!container) return;
       const clf = selectedClassifier || INDIVIDUAL_CLASSIFIERS[0];
       const subtabsHtml = `
